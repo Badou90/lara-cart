@@ -1,0 +1,16 @@
+{
+    "name": "badou/lara-cart",
+    "description": "Laravel framework cart",
+    "authors": [
+        {
+            "name": "Vyacheslav Goryachikh",
+            "email": "badou@yandex.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Badou\\Cart\\": "src"
+        }
+    },
+    "require": {}
+}
