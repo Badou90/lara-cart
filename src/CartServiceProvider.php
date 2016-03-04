@@ -24,7 +24,7 @@ class CartServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(Cart::class, function() {
-            return new Cart($app['session']);
+            return new Cart(app('session'));
         });
 
         $this->app->alias(Cart::class, 'cart');
