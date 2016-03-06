@@ -41,7 +41,13 @@ class Cart {
         $this->updateCart($cart);
     }
 
-    public function addItem($item, $qty)
+    public function remove($item)
+    {
+        $cart = $this->content();
+        $cart->forget($item->id);
+    }
+
+    protected function addItem($item, $qty)
     {
         $cart = $this->content();
 
@@ -51,24 +57,18 @@ class Cart {
         return $cart;
     }
 
-    public function remove($item)
-    {
-        $cart = $this->content();
-        $cart->forget("$this->getInstance().$item->id");
-    }
-
-    public function getInstance()
+    protected function getInstance()
     {
         return 'laracart'.$this->instance;
     }
 
-    public function getItem($id)
+    protected function getItem($id)
     {
         $cart = $this->content();
         return $cart->get($id);
     }
 
-    public function updateCart($cart)
+    protected function updateCart($cart)
     {
         return $this->session->set($this->getInstance(), $cart);
     }
