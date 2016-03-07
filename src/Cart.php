@@ -41,10 +41,38 @@ class Cart {
         $this->updateCart($cart);
     }
 
+    public function update($row, $qty)
+    {
+        $cart = $this->content();
+        $item = $cart->get($row);
+        $item->qty = $qty;
+
+        $cart->put($row, $item);
+        $this->updateCart($cart);
+
+        return [
+            'total' => $this->getTotal(),
+            'item' => $item->userPrice * $item->qty,
+        ];
+    }
+
     public function remove($item)
     {
         $cart = $this->content();
         $cart->forget($item->id);
+    }
+
+    public function getTotal()
+    {
+        $cart = $this->content();
+        $total = 0;
+
+        foreach($cart as $row)
+        {
+            $total += $row->userPrice * $row->qty;
+        }
+
+        return $total;
     }
 
     protected function addItem($item, $qty)
