@@ -29,12 +29,13 @@ class Cart {
         $cart->forget($this->getInstance());
     }
 
-    public function add($item, $qty)
+    public function add($item, $options, $qty)
     {
         $cart = $this->content();
+        $item->options = $options;
 
-        if($cart->has($item->id))
-            $cart = $this->addItem($item, $qty + $this->getItem($item->id)->qty);
+        if($cart->has($this->generateRowId($item->id, $item->options)))
+            $cart = $this->addItem($item, $qty + $this->getItem($this->generateRowId($item->id, $item->options))->qty);
         else
             $cart = $this->addItem($item, $qty);
 
@@ -56,10 +57,10 @@ class Cart {
         ];
     }
 
-    public function remove($item)
+    public function remove($id)
     {
         $cart = $this->content();
-        $cart->forget($item->id);
+        $cart->forget($id);
     }
 
     public function getTotal()
@@ -80,7 +81,7 @@ class Cart {
         $cart = $this->content();
 
         $item->qty = $qty;
-        $cart->put($item->id, $item);
+        $cart->put($this->generateRowId($item->id, $item->options), $item);
 
         return $cart;
     }
@@ -99,5 +100,12 @@ class Cart {
     protected function updateCart($cart)
     {
         return $this->session->set($this->getInstance(), $cart);
+    }
+
+    protected function generateRowId($id, $options)
+    {
+        ksort($options);
+
+        return md5($id.serialize($options));
     }
 }
