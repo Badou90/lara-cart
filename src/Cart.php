@@ -25,8 +25,8 @@ class Cart {
 
     public function clear()
     {
-        $cart = $this->content();
-        $cart->forget($this->getInstance());
+        if($this->session->has($this->getInstance()))
+            $this->session->forget($this->getInstance());
     }
 
     public function add($item, $options, $qty)
